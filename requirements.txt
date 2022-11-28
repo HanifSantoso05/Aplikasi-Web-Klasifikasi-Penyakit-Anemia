@@ -1,7 +1,6 @@
 pandas
 streamlit
 numpy
-PIL
 altair
 sklearn.preprocessing 
 sklearn
