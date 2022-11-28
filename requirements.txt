@@ -1,0 +1,12 @@
+pandas
+streamlit
+numpy
+PIL
+altair
+sklearn.preprocessing 
+sklearn
+sklearn.model_selection
+sklearn.metrics
+sklearn.naive_bayes
+sklearn.neighbors
+sklearn.tree
