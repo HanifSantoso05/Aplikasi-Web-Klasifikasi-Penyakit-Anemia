@@ -3,4 +3,4 @@ streamlit
 numpy
 altair
 sklearn
-
+from sklearn.preprocessing import MinMaxScaler
