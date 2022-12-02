@@ -95,7 +95,7 @@ with st.container():
     elif selected == "Prepocessing":
         st.subheader("""Normalisasi Data""")
         st.write("""Rumus Normalisasi Data :""")
-        st.image('https://i.stack.imgur.com/EuitP.png', use_column_width=False, width=250)
+        st.latex(r'''x^{'} = \frac{x - x_{min}}{x_{max}-x_{min}}''')
         df = pd.read_csv('https://raw.githubusercontent.com/HanifSantoso05/dataset_matkul/main/anemia.csv')
         st.markdown("""
         Dimana :
