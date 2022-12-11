@@ -1,10 +1,9 @@
 import streamlit as st
+import plotly.express as px
 from streamlit_option_menu import option_menu
 import pandas as pd
 import numpy as np
-import altair as alt
 from sklearn.preprocessing import MinMaxScaler
-from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import GaussianNB
@@ -18,18 +17,18 @@ with st.container():
         selected = option_menu(
         st.write("""<h3 style = "text-align: center;"><img src="https://lh3.googleusercontent.com/a/ALm5wu2PukBXPMX88VuehLVmYvtTCLj1-XFDgkoky1-JBg=s192-c-rg-br100" width="90" height="90"><br> MUHAMMAD HANIF SANTOSO <p>200411100078 hanifsans05@gmail.com</p></h3>""",unsafe_allow_html=True), 
         ["Home", "Description", "Dataset", "Prepocessing", "Modeling", "Implementation"], 
-            icons=['house', 'file-earmark-font', 'bar-chart', 'gear', 'arrow-down-square', 'check2-square'], menu_icon="cast", default_index=1,
+            icons=['house', 'file-earmark-font', 'bar-chart', 'gear', 'arrow-down-square', 'check2-square'], menu_icon="cast", default_index=0,
             styles={
-                "container": {"padding": "0!important", "background-color": "#fafafa"},
+                "container": {"padding": "0!important", "background-color": "teal"},
                 "icon": {"color": "#FF9933", "font-size": "18px"}, 
-                "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px"},
+                "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "color":"white"},
                 "nav-link-selected": {"background-color": "teal"},
             }
         )
-
     if selected == "Home":
-        st.image('https://cdn-2.tstatic.net/jatim/foto/bank/images/anemia.jpg', use_column_width=False, width=500)
-
+        st.write("""<h3 style = "text-align: center;">
+        <img src="https://cdn-2.tstatic.net/jatim/foto/bank/images/anemia.jpg" width="500" height="300">
+        </h3>""",unsafe_allow_html=True)
         st.write("""
         Anemia adalah suatu kondisi di mana Anda kekurangan sel darah merah yang sehat untuk membawa oksigen yang cukup ke jaringan tubuh Anda. Penderita anemia, juga disebut hemoglobin rendah, bisa membuat Anda merasa lelah dan lemah.
         """)
@@ -95,7 +94,7 @@ with st.container():
     elif selected == "Prepocessing":
         st.subheader("""Normalisasi Data""")
         st.write("""Rumus Normalisasi Data :""")
-        st.latex(r'''x^{'} = \frac{x - x_{min}}{x_{max}-x_{min}}''')
+        st.image('https://i.stack.imgur.com/EuitP.png', use_column_width=False, width=250)
         df = pd.read_csv('https://raw.githubusercontent.com/HanifSantoso05/dataset_matkul/main/anemia.csv')
         st.markdown("""
         Dimana :
@@ -165,23 +164,24 @@ with st.container():
             #Gaussian Naive Bayes
             gaussian = GaussianNB()
             gaussian = gaussian.fit(training, training_label)
-
+            # prediction
             probas = gaussian.predict_proba(test)
             probas = probas[:,1]
             probas = probas.round()
-
+            #Accuracy
             gaussian_akurasi = round(100 * accuracy_score(test_label,probas))
 
             #KNN
             K=10
             knn=KNeighborsClassifier(n_neighbors=K)
             knn.fit(training,training_label)
+            # prediction
             knn_predict=knn.predict(test)
-
+            #Accuracy
             knn_akurasi = round(100 * accuracy_score(test_label,knn_predict))
 
             #Decission Tree
-            dt = DecisionTreeClassifier()
+            dt = DecisionTreeClassifier(random_state=1)
             dt.fit(training, training_label)
             # prediction
             dt_pred = dt.predict(test)
@@ -190,12 +190,11 @@ with st.container():
 
             if submitted :
                 if naive :
-                    st.write('Model Naive Bayes accuracy score: {0:0.2f}'. format(gaussian_akurasi))
+                    st.write('Model Naive Bayes accuracy score: {0:0.0f}'. format(gaussian_akurasi),'%')
                 if k_nn :
-                    st.write("Model KNN accuracy score : {0:0.2f}" . format(knn_akurasi))
+                    st.write("Model KNN accuracy score : {0:0.0f}" . format(knn_akurasi),'%')
                 if destree :
-                    st.write("Model Decision Tree accuracy score : {0:0.2f}" . format(dt_akurasi))
-            
+                    st.write("Model Decision Tree accuracy score : {0:0.0f}" . format(dt_akurasi),'%')
             grafik = st.form_submit_button("Grafik akurasi semua model")
             if grafik:
                 data = pd.DataFrame({
@@ -203,21 +202,17 @@ with st.container():
                     'Model' : ['Gaussian Naive Bayes', 'K-NN', 'Decission Tree'],
                 })
 
-                chart = (
-                    alt.Chart(data)
-                    .mark_bar()
-                    .encode(
-                        alt.X("Akurasi"),
-                        alt.Y("Model"),
-                        alt.Color("Akurasi"),
-                        alt.Tooltip(["Akurasi", "Model"]),
-                    )
-                    .interactive()
-                )
-                st.altair_chart(chart,use_container_width=True)
+                bar_chart = px.bar(data, 
+                    x='Model', 
+                    y='Akurasi',
+                    text='Akurasi',
+                    color_discrete_sequence =['teal']*len(data),
+                    template= 'plotly_white',
+                    width=680)
+                bar_chart
 
     elif selected == "Implementation":
-        with st.form("my_form"):
+        with st.form("Implementation"):
             #Read Dataset
             df = pd.read_csv('https://raw.githubusercontent.com/HanifSantoso05/dataset_matkul/main/anemia.csv')
 
@@ -253,7 +248,7 @@ with st.container():
             knn_predict=knn.predict(test)
 
             #Decission Tree
-            dt = DecisionTreeClassifier()
+            dt = DecisionTreeClassifier(random_state=1)
             dt.fit(training, training_label)
             dt_pred = dt.predict(test)
 
@@ -296,7 +291,7 @@ with st.container():
 
                 st.subheader('Hasil Prediksi')
                 st.write('Menggunakan Pemodelan :',model)
-                st.write('Akurasi: {0:0.2f}'. format(akurasi))
+                st.write('Akurasi: {0:0.0f}'. format(akurasi),'%')
                 
 
                 if input_pred == 1:
