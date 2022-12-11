@@ -10,21 +10,37 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 
+st.set_page_config(
+    page_title="Anemia Classification",
+    page_icon='blood.png',
+    layout='centered',
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://www.extremelycoolapp.com/help',
+        'Report a bug': "https://www.extremelycoolapp.com/bug",
+        'About': "# This is a header. This is an *extremely* cool app!"
+    }
+)
 st.write("""<h1>Aplikasi Klasifikasi Penderita Anemia</h1>""",unsafe_allow_html=True)
 
 with st.container():
     with st.sidebar:
         selected = option_menu(
-        st.write("""<h3 style = "text-align: center;"><img src="https://lh3.googleusercontent.com/a/ALm5wu2PukBXPMX88VuehLVmYvtTCLj1-XFDgkoky1-JBg=s192-c-rg-br100" width="90" height="90"><br> MUHAMMAD HANIF SANTOSO <p>200411100078 hanifsans05@gmail.com</p></h3>""",unsafe_allow_html=True), 
+        st.write("""<h3 style = "text-align: center;"><img src="https://lh3.googleusercontent.com/a/ALm5wu2PukBXPMX88VuehLVmYvtTCLj1-XFDgkoky1-JBg=s192-c-rg-br100" width="90" height="90"><br> MUHAMMAD HANIF SANTOSO <p>200411100078</p></h3>""",unsafe_allow_html=True), 
         ["Home", "Description", "Dataset", "Prepocessing", "Modeling", "Implementation"], 
             icons=['house', 'file-earmark-font', 'bar-chart', 'gear', 'arrow-down-square', 'check2-square'], menu_icon="cast", default_index=0,
             styles={
-                "container": {"padding": "0!important", "background-color": "teal"},
-                "icon": {"color": "#FF9933", "font-size": "18px"}, 
+                "container": {"padding": "0!important", "background-color": "#FF4B4B"},
+                "icon": {"color": "white", "font-size": "18px"}, 
                 "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "color":"white"},
-                "nav-link-selected": {"background-color": "teal"},
+                "nav-link-selected":{"background-color": "#FF4B4B"}
             }
         )
+        st.write(""" """)
+        st.write(""" """)
+        st.write(""" """)
+        st.write("""<center><a href="https://github.com/HanifSantoso05/Aplikasi-Web-Klasifikasi-Penyakit-Anemia"><span><img src="https://cdns.iconmonstr.com/wp-content/releases/preview/2012/240/iconmonstr-github-1.png" width="40px" height="40px"></span></a><a style = "margin-left: 20px;" href="http://hanifsantoso05.github.io/datamining/intro.html"><span><img src="https://friconix.com/png/fi-stluxx-jupyter-notebook.png" width="40px" height="40px"></span></a> <a style = "margin-left: 20px;" href="mailto: hanifsans05@gmail.com"><span><img src="https://cdn-icons-png.flaticon.com/512/60/60543.png" width="40px" height="40px"></span></a></center>""",unsafe_allow_html=True)
+
     if selected == "Home":
         st.write("""<h3 style = "text-align: center;">
         <img src="https://cdn-2.tstatic.net/jatim/foto/bank/images/anemia.jpg" width="500" height="300">
@@ -89,7 +105,7 @@ with st.container():
     elif selected == "Dataset":
         st.subheader("""Dataset Anemia""")
         df = pd.read_csv('https://raw.githubusercontent.com/HanifSantoso05/dataset_matkul/main/anemia.csv')
-        st.dataframe(df)
+        st.dataframe(df, width=600)
 
     elif selected == "Prepocessing":
         st.subheader("""Normalisasi Data""")
@@ -118,7 +134,7 @@ with st.container():
         scaled_features = pd.DataFrame(scaled, columns=features_names)
 
         st.subheader('Hasil Normalisasi Data')
-        st.write(scaled_features)
+        st.dataframe(scaled_features, width=600)
 
         st.subheader('Target Label')
         dumies = pd.get_dummies(df.Result).columns.values.tolist()
@@ -206,8 +222,7 @@ with st.container():
                     x='Model', 
                     y='Akurasi',
                     text='Akurasi',
-                    color_discrete_sequence =['teal']*len(data),
-                    template= 'plotly_white',
+                    color_discrete_sequence =['#FF4B4B']*len(data),
                     width=680)
                 bar_chart
 
