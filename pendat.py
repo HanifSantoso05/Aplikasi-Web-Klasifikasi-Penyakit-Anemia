@@ -239,7 +239,6 @@ with st.container():
             
             #NORMALISASI NILAI X
             scaler = MinMaxScaler()
-            #scaler.fit(features)
             #scaler.transform(features)
             scaled = scaler.fit_transform(X)
             features_names = X.columns.copy()
